@@ -1,0 +1,2 @@
+# stargame
+start
