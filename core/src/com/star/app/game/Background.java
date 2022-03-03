@@ -1,42 +1,39 @@
-package com.star.app;
+package com.star.app.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import static com.star.app.ScreenManager.*;
+import com.star.app.StarGame;
+import static com.star.app.screen.ScreenManager.*;
 
 /**
  *
  * @author degelad
  */
+import static com.star.app.screen.ScreenManager.*;
+
 public class Background {
-
     private class Star {
-
         private Vector2 position;
-        private Vector2 velosity;
+        private Vector2 velocity;
         private float scale;
 
         public Star() {
             this.position = new Vector2(MathUtils.random(-200, SCREEN_WIDTH + 200),
                     MathUtils.random(-200, SCREEN_HEIGHT + 200));
-            this.velosity = new Vector2(MathUtils.random(-40, -5), 0);
-            scale = Math.abs(velosity.x / 40f) * 0.8f;
+            this.velocity = new Vector2(MathUtils.random(-40, -5), 0);
+            scale = Math.abs(velocity.x / 40f) * 0.8f;
         }
 
         public void update(float dt) {
-            position.x += (velosity.x - starGame.getHero().
-                    getLastDisplacement().x * 15) * dt;
-            position.y += (velosity.y - starGame.getHero().
-                    getLastDisplacement().y * 15) * dt;
+            position.x += (velocity.x - gc.getHero().getVelocity().x * 0.1f) * dt;
+            position.y += (velocity.y - gc.getHero().getVelocity().y * 0.1f) * dt;
 
-            scale = Math.abs(velosity.x / 40f) * 0.8f;
             if (position.x < -200) {
                 position.x = SCREEN_WIDTH + 200;
-            }
-            if (position.y < -20) {
                 position.y = MathUtils.random(0, SCREEN_HEIGHT);
+                scale = Math.abs(velocity.x / 40f) * 0.8f;
             }
         }
     }
@@ -44,11 +41,11 @@ public class Background {
     private final int STAR_COUNT = 600;
     private Texture textureCosmos;
     private Texture textureStar;
-    private StarGame starGame;
+    private GameController gc;
     private Star[] stars;
 
-    public Background(StarGame starGame) {
-        this.starGame = starGame;
+    public Background(GameController gc) {
+        this.gc = gc;
         this.textureCosmos = new Texture("bg.png");
         this.textureStar = new Texture("star16.png");
         this.stars = new Star[STAR_COUNT];
@@ -67,7 +64,6 @@ public class Background {
                 batch.draw(textureStar, stars[i].position.x - 8, stars[i].position.y - 8, 8, 8,
                         16, 16, stars[i].scale * 2, stars[i].scale * 2,
                         0, 0, 0, 16, 16, false, false);
-
             }
         }
     }
@@ -76,7 +72,6 @@ public class Background {
         for (int i = 0; i < stars.length; i++) {
             stars[i].update(dt);
         }
-
     }
 
 }
