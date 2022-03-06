@@ -29,6 +29,10 @@ public class Asteroid implements Poolable {
     private final float BASE_SIZE = 256f;
     private final float BASE_RADIUS = BASE_SIZE / 2;
 
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
     public float getScale() {
         return scale;
     }
