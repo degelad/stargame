@@ -24,14 +24,19 @@ public class Hero {
     private Vector2 velocity;
     private float angle;
     private float enginePower;
+    private StringBuilder sb;
+    private Circle hitArea;
+    private Weapon currentWeapon;
     private float fireTimer;
     private int score;
     private int scoreView;
     private int hpMax;
     private int hp;
-    private StringBuilder sb;
-    private Circle hitArea;
-    private Weapon currentWeapon;
+    private int money;
+
+    public Weapon getCurrentWeapon() {
+        return currentWeapon;
+    }
 
     public Circle getHitArea() {
         return hitArea;
@@ -64,6 +69,7 @@ public class Hero {
         this.hp = hpMax;
         this.sb = new StringBuilder();
         this.hitArea = new Circle(position, 28);
+        this.money = 0;
         this.currentWeapon = new Weapon(gc, this, 0.2f, 1, 700, 100, new Vector3[]{
             new Vector3(28, 0, 0),
             new Vector3(28, -90, -10),
@@ -78,11 +84,26 @@ public class Hero {
         hp -= amount;
     }
 
+    public void consume(PowerUp p) {
+        switch (p.getType()) {
+            case MEDKIT:
+                hp += p.getPower();
+                break;
+            case AMMOS:
+                currentWeapon.addAmmos(p.getPower());
+                break;
+            case MONEY:
+                money += p.getPower();
+                break;
+        }
+    }
+
     public void renderGUI(SpriteBatch batch, BitmapFont font) {
         sb.setLength(0);
         sb.append("SCORE: ").append(scoreView).append("\n");
         sb.append("HP: ").append(hp).append("/").append(hpMax).append("\n");
         sb.append("BULLETS: ").append(currentWeapon.getCurBullets()).append("/").append(currentWeapon.getMaxBullets()).append("\n");
+        sb.append("MONEY: ").append(money).append("\n");
         font.draw(batch, sb, 20, 700);
     }
 

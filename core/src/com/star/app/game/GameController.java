@@ -14,8 +14,13 @@ public class GameController {
     private BulletController bulletController;
     private AsteroidController asteroidController;
     private ParticleController particleController;
+    private PowerUpsController powerUpsController;
     private Hero hero;
     private Vector2 tempVec;
+
+    public PowerUpsController getPowerUpsController() {
+        return powerUpsController;
+    }
 
     public ParticleController getParticleController() {
         return particleController;
@@ -42,6 +47,7 @@ public class GameController {
         this.bulletController = new BulletController(this);
         this.asteroidController = new AsteroidController(this);
         this.particleController = new ParticleController();
+        this.powerUpsController = new PowerUpsController(this);
         this.hero = new Hero(this);
         this.tempVec = new Vector2();
         for (int i = 0; i < 3; i++) {
@@ -56,6 +62,7 @@ public class GameController {
         bulletController.update(dt);
         asteroidController.update(dt);
         particleController.update(dt);
+        powerUpsController.update(dt);
         hero.update(dt);
         checkCollisions();
     }
@@ -93,22 +100,33 @@ public class GameController {
                 Asteroid a = asteroidController.getActiveList().get(j);
                 if (a.getHitArea().contains(b.getPosition())) {
 
-particleController.setup(b.getPosition().x + MathUtils.random(-4, 4), b.getPosition().y + MathUtils.random(-4, 4),
-                    b.getVelocity().x * -0.3f + MathUtils.random(-30, 30), b.getVelocity().y * -0.3f + MathUtils.random(-30, 30),
-                    0.2f,
-                    2.5f, 1.2f,
-                    1.0f, 1.5f, 1.0f, 1.0f,
-                    0.0f, 0.1f, 1.0f, 0.0f);
-
+                    particleController.setup(b.getPosition().x + MathUtils.random(-4, 4), b.getPosition().y + MathUtils.random(-4, 4),
+                            b.getVelocity().x * -0.3f + MathUtils.random(-30, 30), b.getVelocity().y * -0.3f + MathUtils.random(-30, 30),
+                            0.2f,
+                            2.5f, 1.2f,
+                            1.0f, 1.5f, 1.0f, 1.0f,
+                            0.0f, 0.1f, 1.0f, 0.0f);
 
                     b.deactivate();
-                    if (a.takeDamage(1)) {
+                    if (a.takeDamage(hero.getCurrentWeapon().getDamage())) {
                         hero.addScore(a.getHpMax() * 100);
+                        for (int k = 0; k < 3; k++) {
+                            powerUpsController.setup(a.getPosition().x, a.getPosition().y, a.getScale() * 0.25f);
+                        }
                     }
                     break;
                 }
             }
 
+        }
+        // Столкновение поверапсов и героя
+        for (int i = 0; i < powerUpsController.getActiveList().size(); i++) {
+            PowerUp pu = powerUpsController.getActiveList().get(i);
+            if (hero.getHitArea().contains(pu.getPosition())) {
+                hero.consume(pu);
+                particleController.getEffectBuilder().takePowerUpsEffect(pu);
+                pu.deactivate();
+            }
         }
     }
 }

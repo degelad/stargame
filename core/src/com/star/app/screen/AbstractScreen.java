@@ -1,12 +1,19 @@
 package com.star.app.screen;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  *
  * @author degelad
  */
 public abstract class AbstractScreen implements Screen {
+
+    protected SpriteBatch batch;
+
+    public AbstractScreen(SpriteBatch batch) {
+        this.batch = batch;
+    }
 
 //метод срабатывает когда получаем фокус экрана
     @Override
@@ -20,7 +27,8 @@ public abstract class AbstractScreen implements Screen {
 
 //метод срабатывает если меняем разрешение нашего экрана, например при повороте экрана телефона.
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int width, int height) {
+        ScreenManager.getInstance().resize(width, height);
     }
 
 //метод срабатывает при постановке на паузу приложения
