@@ -14,4 +14,4 @@ start
 11. Кнопка паузы "O" реализована в GameScreen.
 	Почему то не работает isKeyJustPressed пришлось использовать isKeyPressed,
 	поэтому пауза действует только пока удерживаем кнопку.
-12. GameOverScreen. Если у корабля HP <= 0, то игра переходит в GameOverScreen.
+12. GameOverScreen. Если у корабля HP <= 0, то игра переходит в GameOverScreen. 
