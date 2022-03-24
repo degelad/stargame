@@ -1,5 +1,7 @@
 package com.star.app.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.star.app.game.GameController;
 import com.star.app.game.WorldRenderer;
@@ -27,12 +29,16 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        gc.update(delta);
-        worldRenderer.render();
+
+        if (!Gdx.input.isKeyPressed(Input.Keys.O)) {
+            gc.update(delta);
+            worldRenderer.render();
     }
 
-    @Override
-    public void dispose() {
+}
+
+@Override
+        public void dispose() {
         gc.dispose();
     }
 }
