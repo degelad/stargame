@@ -1,7 +1,10 @@
 package com.star.app.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.star.app.screen.ScreenManager;
 
 /**
@@ -17,6 +20,11 @@ public class GameController {
     private PowerUpsController powerUpsController;
     private Hero hero;
     private Vector2 tempVec;
+    private Stage stage;
+
+    public Stage getStage() {
+        return stage;
+    }
 
     public PowerUpsController getPowerUpsController() {
         return powerUpsController;
@@ -42,7 +50,7 @@ public class GameController {
         return hero;
     }
 
-    public GameController() {
+    public GameController(SpriteBatch batch) {
         this.background = new Background(this);
         this.bulletController = new BulletController(this);
         this.asteroidController = new AsteroidController(this);
@@ -50,6 +58,9 @@ public class GameController {
         this.powerUpsController = new PowerUpsController(this);
         this.hero = new Hero(this);
         this.tempVec = new Vector2();
+        this.stage = new Stage(ScreenManager.getInstance().getViewport(), batch);
+        this.stage.addActor(hero.getShop());
+        Gdx.input.setInputProcessor(stage);
         for (int i = 0; i < 3; i++) {
             asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
                     MathUtils.random(0, ScreenManager.SCREEN_HEIGHT),
@@ -64,7 +75,11 @@ public class GameController {
         particleController.update(dt);
         powerUpsController.update(dt);
         hero.update(dt);
+        stage.act(dt);
         checkCollisions();
+        if (!hero.isAlive()) {
+            ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAMEOVER, hero);
+        }
     }
 
     public void checkCollisions() {
@@ -128,5 +143,9 @@ public class GameController {
                 pu.deactivate();
             }
         }
+    }
+
+    public void dispose() {
+        background.dispose();
     }
 }
