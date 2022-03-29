@@ -3,6 +3,8 @@ package com.star.app.screen.utils;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.star.app.screen.ScreenManager;
 
 public class Assets {
+
     private static final Assets ourInstance = new Assets();
 
     public static Assets getInstance() {
@@ -37,9 +40,23 @@ public class Assets {
         switch (type) {
             case GAME:
                 assetManager.load("images/game.pack", TextureAtlas.class);
+                assetManager.load("audio/mortal.mp3", Music.class);
+                assetManager.load("audio/shoot.mp3", Sound.class);
+                createStandardFont(72);
                 createStandardFont(32);
-                assetManager.finishLoading();
-                textureAtlas = assetManager.get("images/game.pack", TextureAtlas.class);
+                createStandardFont(24);
+                break;
+            case MENU:
+                assetManager.load("images/game.pack", TextureAtlas.class);
+                assetManager.load("audio/music.mp3", Music.class);
+                createStandardFont(72);
+                createStandardFont(24);
+                break;
+            case GAMEOVER:
+                assetManager.load("images/game.pack", TextureAtlas.class);
+                createStandardFont(72);
+                createStandardFont(48);
+                createStandardFont(24);
                 break;
         }
     }
@@ -61,4 +78,9 @@ public class Assets {
     public void clear() {
         assetManager.clear();
     }
+
+    public void makeLinks() {
+        textureAtlas = assetManager.get("images/game.pack", TextureAtlas.class);
+    }
+
 }

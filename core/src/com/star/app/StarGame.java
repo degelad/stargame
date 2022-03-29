@@ -8,27 +8,27 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.star.app.game.Background;
 import com.star.app.game.Hero;
 import com.star.app.screen.GameScreen;
+import com.star.app.screen.ScreenManager;
 
 public class StarGame extends Game {
+	private SpriteBatch batch;
 
-    private SpriteBatch batch;
-    private GameScreen gameScreen;
 
-    @Override
-    public void create() {
-        batch = new SpriteBatch();
-        this.gameScreen = new GameScreen(batch);
-        setScreen(gameScreen);
-    }
+	@Override
+	public void create () {
+		batch = new SpriteBatch();
+		ScreenManager.getInstance().init(this,batch);
+		ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.MENU);
+	}
 
-    @Override
-    public void render() {
-        float dt = Gdx.graphics.getDeltaTime();
-        getScreen().render(dt);
-    }
+	@Override
+	public void render () {
+		float dt = Gdx.graphics.getDeltaTime();
+		getScreen().render(dt);
+	}
 
-    @Override
-    public void dispose() {
-        batch.dispose();
-    }
+	@Override
+	public void dispose () {
+		batch.dispose();
+	}
 }
