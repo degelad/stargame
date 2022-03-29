@@ -11,7 +11,7 @@ import com.star.app.screen.utils.Assets;
  *
  * @author degelad
  */
-public class GameScreen extends AbstractScreen {
+public class GameScreen extends AbstractScreen{
 
     private GameController gc;
     private WorldRenderer worldRenderer;
@@ -29,16 +29,12 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-
-        if (!Gdx.input.isKeyPressed(Input.Keys.O)) {
-            gc.update(delta);
-            worldRenderer.render();
+        gc.update(delta);
+        worldRenderer.render();
     }
 
-}
-
-@Override
-        public void dispose() {
+    @Override
+    public void dispose() {
         gc.dispose();
     }
 }
