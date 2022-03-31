@@ -2,11 +2,13 @@ package com.star.app.game;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.star.app.screen.ScreenManager;
 
 public class Ship {
+
     protected GameController gc;
     protected TextureRegion texture;
     protected Vector2 position;
@@ -20,6 +22,11 @@ public class Ship {
     protected Weapon currentWeapon;
     protected int weaponNum;
     protected Weapon[] weapons;
+    protected OwnerType ownerType;
+
+    public OwnerType getOwnerType() {
+        return ownerType;
+    }
 
     public Weapon getCurrentWeapon() {
         return currentWeapon;
@@ -56,6 +63,16 @@ public class Ship {
         this.currentWeapon = weapons[weaponNum];
     }
 
+    public void accelerate(float dt) {
+        velocity.x += MathUtils.cosDeg(angle) * enginePower * dt;
+        velocity.y += MathUtils.sinDeg(angle) * enginePower * dt;
+    }
+
+    public void brake(float dt){
+        velocity.x += MathUtils.cosDeg(angle) * enginePower * -0.5f * dt;
+        velocity.y += MathUtils.sinDeg(angle) * enginePower * -0.5f * dt;
+    }
+
     public void update(float dt) {
         fireTimer += dt;
         position.mulAdd(velocity, dt);
@@ -75,49 +92,43 @@ public class Ship {
 
     private void createWeapons() {
         weapons = new Weapon[]{
-                new Weapon(gc, this, 0.2f, 1, 400, 100,
-                        new Vector3[]{
-                                new Vector3(28, -90, -10),
-                                new Vector3(28, 90, 10),
-                        }),
-                new Weapon(gc, this, 0.2f, 1, 500, 200,
-                        new Vector3[]{
-                                new Vector3(28, 0, 0),
-                                new Vector3(28, -90, -10),
-                                new Vector3(28, 90, 10),
-                        }),
-                new Weapon(gc, this, 0.1f, 1, 700, 500,
-                        new Vector3[]{
-                                new Vector3(28, 0, 0),
-                                new Vector3(28, -90, -10),
-                                new Vector3(28, 90, 10),
-                        }),
-                new Weapon(gc, this, 0.1f, 1, 700, 800,
-                        new Vector3[]{
-                                new Vector3(28, 0, 0),
-                                new Vector3(28, -90, -10),
-                                new Vector3(28, -90, -20),
-                                new Vector3(28, 90, 10),
-                                new Vector3(28, 90, 20),
-                        }),
-                new Weapon(gc, this, 0.1f, 2, 700, 1000,
-                        new Vector3[]{
-                                new Vector3(28, 0, 0),
-                                new Vector3(28, -90, -10),
-                                new Vector3(28, -90, -20),
-                                new Vector3(28, 90, 10),
-                                new Vector3(28, 90, 20),
-                        }),
-                new Weapon(gc, this, 0.2f, 10, 700, 1000,
-                        new Vector3[]{
-                                new Vector3(28, 0, 0),
-                                new Vector3(28, -90, -10),
-                                new Vector3(28, -90, -20),
-                                new Vector3(28, -90, -30),
-                                new Vector3(28, 90, 10),
-                                new Vector3(28, 90, 20),
-                                new Vector3(28, 90, 30),
-                        })
+            new Weapon(gc, this, 0.2f, 1, 400, 100,
+            new Vector3[]{
+                new Vector3(28, -90, 0),
+                new Vector3(28, 90, 0),}),
+            new Weapon(gc, this, 0.2f, 1, 500, 200,
+            new Vector3[]{
+                new Vector3(28, 0, 0),
+                new Vector3(28, -90, -10),
+                new Vector3(28, 90, 10),}),
+            new Weapon(gc, this, 0.1f, 1, 700, 500,
+            new Vector3[]{
+                new Vector3(28, 0, 0),
+                new Vector3(28, -90, -10),
+                new Vector3(28, 90, 10),}),
+            new Weapon(gc, this, 0.1f, 1, 700, 800,
+            new Vector3[]{
+                new Vector3(28, 0, 0),
+                new Vector3(28, -90, -10),
+                new Vector3(28, -90, -20),
+                new Vector3(28, 90, 10),
+                new Vector3(28, 90, 20),}),
+            new Weapon(gc, this, 0.1f, 2, 700, 1000,
+            new Vector3[]{
+                new Vector3(28, 0, 0),
+                new Vector3(28, -90, -10),
+                new Vector3(28, -90, -20),
+                new Vector3(28, 90, 10),
+                new Vector3(28, 90, 20),}),
+            new Weapon(gc, this, 0.2f, 10, 700, 1000,
+            new Vector3[]{
+                new Vector3(28, 0, 0),
+                new Vector3(28, -90, -10),
+                new Vector3(28, -90, -20),
+                new Vector3(28, -90, -30),
+                new Vector3(28, 90, 10),
+                new Vector3(28, 90, 20),
+                new Vector3(28, 90, 30),})
         };
     }
 

@@ -1,6 +1,7 @@
 package com.star.app.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,14 +16,15 @@ import com.star.app.game.Background;
 import com.star.app.game.Hero;
 import com.star.app.screen.utils.Assets;
 
-
 public class GameOverScreen extends AbstractScreen {
+
     private BitmapFont font72;
     private BitmapFont font48;
     private BitmapFont font24;
     private Background background;
     private Hero defeatedHero;
     private StringBuilder sb;
+    private Music music;
 
     public void setDefeatedHero(Hero defeatedHero) {
         this.defeatedHero = defeatedHero;
@@ -39,6 +41,10 @@ public class GameOverScreen extends AbstractScreen {
         this.font48 = Assets.getInstance().getAssetManager().get("fonts/font48.ttf");
         this.font24 = Assets.getInstance().getAssetManager().get("fonts/font24.ttf");
         this.sb = new StringBuilder();
+
+        this.music = Assets.getInstance().getAssetManager().get("audio/music.mp3");
+        this.music.setLooping(true);
+        this.music.play();
     }
 
     public void update(float dt) {
@@ -58,7 +64,7 @@ public class GameOverScreen extends AbstractScreen {
         sb.setLength(0);
         sb.append("SCORE: ").append(defeatedHero.getScore()).append("\n");
         sb.append("MONEY: ").append(defeatedHero.getMoney()).append("\n");
-        font48.draw(batch, sb, 0, 400,ScreenManager.SCREEN_WIDTH, Align.center, false);
+        font48.draw(batch, sb, 0, 400, ScreenManager.SCREEN_WIDTH, Align.center, false);
         font24.draw(batch, "Tap screen to return to main menu", 0, 40,
                 ScreenManager.SCREEN_WIDTH, Align.center, false);
         batch.end();
