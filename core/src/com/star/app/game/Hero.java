@@ -56,7 +56,7 @@ public class Hero extends Ship {
     }
 
     public void decreaseMoney(int amount) {
-        money -= amount;
+        money -= amount; 
     }
 
     public void setPause(boolean pause) {
